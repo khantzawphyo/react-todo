@@ -108,14 +108,14 @@ const TodoItem = ({ todo: { id, text, completed } }) => {
       {isEditing ? (
         <div className="flex items-center justify-center gap-1">
           <button
-            className="rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800"
+            className="rounded-md p-2 opacity-100 transition-opacity duration-300 hover:bg-stone-100 hover:text-stone-800"
             onClick={handleSaveEdit}
             title="Save"
           >
             <Save className="h-4 w-4" />
           </button>
           <button
-            className="rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800"
+            className="rounded-md p-2 opacity-100 transition-opacity duration-300 hover:bg-stone-100 hover:text-stone-800"
             onClick={handleCancel}
             title="Cancel"
           >
@@ -125,14 +125,28 @@ const TodoItem = ({ todo: { id, text, completed } }) => {
       ) : (
         <div className="flex items-center justify-center gap-1">
           <button
-            className="rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800"
+            className="rounded-md p-2 opacity-100 transition-opacity duration-300 hover:bg-stone-100 hover:text-stone-800 sm:hidden"
             onClick={handleEdit}
             title="Edit"
           >
             <Edit2 className="h-4 w-4" />
           </button>
           <button
-            className="rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800"
+            className="rounded-md p-2 opacity-100 transition-opacity duration-300 hover:bg-stone-100 hover:text-stone-800 sm:hidden"
+            onClick={handleDelete}
+            title="Delete"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+          <button
+            className="hidden rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800 sm:flex"
+            onClick={handleEdit}
+            title="Edit"
+          >
+            <Edit2 className="h-4 w-4" />
+          </button>
+          <button
+            className="hidden rounded-md p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:bg-stone-100 hover:text-stone-800 sm:flex"
             onClick={handleDelete}
             title="Delete"
           >
