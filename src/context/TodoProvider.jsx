@@ -12,6 +12,11 @@ const TodoProvider = ({ children }) => {
     setTodos([...todos, newTodo]);
   };
 
+  const updateTodo = (id, newText) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)),
+    );
+  };
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -24,7 +29,7 @@ const TodoProvider = ({ children }) => {
     );
   };
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, markComplete }}>
+    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, markComplete }}>
       {children}
     </TodoContext.Provider>
   );
