@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import TodoContext from "./TodoContext";
 
 const TodoProvider = ({ children }) => {
-  const [todos, setTodos] = useState([
-    { id: "1", text: "Grab a coffee", completed: true },
-    { id: "2", text: "Watch a movie", completed: false },
-    { id: "3", text: "Study", completed: false },
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const addTodo = (newTodo) => {
     setTodos([...todos, newTodo]);
@@ -29,7 +25,9 @@ const TodoProvider = ({ children }) => {
     );
   };
   return (
-    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, markComplete }}>
+    <TodoContext.Provider
+      value={{ todos, addTodo, updateTodo, deleteTodo, markComplete }}
+    >
       {children}
     </TodoContext.Provider>
   );
