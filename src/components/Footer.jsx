@@ -3,8 +3,8 @@ import { Github, Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-slate-100 bg-slate-50/50 px-4 py-6">
-      <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-2">
+    <footer className="p-4">
+      <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-1">
         <div className="flex items-center gap-1 text-sm text-slate-600">
           <span>Built with</span>
           <Heart className="h-4 w-4 fill-red-500 text-red-500" />
