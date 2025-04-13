@@ -16,7 +16,7 @@ const TodoList = () => {
           {todos.length === 0 ? (
             <div className="mt-16 text-center">
               <img
-                src="./src/assets/empty.svg"
+                src="/empty.svg"
                 alt="No tasks yet"
                 className="mx-auto w-42"
                 draggable="false"
