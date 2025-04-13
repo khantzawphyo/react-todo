@@ -2,6 +2,7 @@ import React from "react";
 import TodoList from "./components/TodoList";
 import TodoProvider from "./context/TodoProvider";
 import Footer from "./components/Footer";
+import { Toaster } from "sonner";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
         <div className="w-full max-w-md flex-auto">
           <TodoProvider>
             <TodoList />
+            <Toaster closeButton richColors position="top-right" />
           </TodoProvider>
         </div>
       </main>

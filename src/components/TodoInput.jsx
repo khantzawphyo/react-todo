@@ -18,13 +18,16 @@ const TodoInput = () => {
   };
 
   const handleAddTodo = () => {
-    if (newTodo.trim() === "") return;
+    if (newTodo.trim() === "") {
+      toast.error("Oops! Please enter a task to add.");
+      return;
+    }
     const todo = {
       id: Date.now().toString(),
       text: newTodo,
       completed: false,
     };
-    toast.success("Todo added successfully!");
+    toast.success(`Task added: "${newTodo}".`);
     addTodo(todo);
     setNewTodo("");
   };
@@ -43,7 +46,7 @@ const TodoInput = () => {
         className="inline-flex h-10 items-center justify-center rounded-md bg-stone-950 px-3 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-stone-950/90"
         onClick={handleAddTodo}
       >
-        <Plus className="h-4 w-4" />
+        <Plus className="h-4 w-4" aria-label="Add Task" />
       </button>
     </div>
   );

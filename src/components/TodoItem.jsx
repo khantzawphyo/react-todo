@@ -21,6 +21,12 @@ const TodoItem = ({ todo: { id, text, completed } }) => {
 
   const handleToggleComplete = () => {
     markComplete(id);
+
+    if (completed) {
+      toast.info(`"${text}" marked as incomplete. 📢`);
+    } else {
+      toast.success(`"${text}" marked as complete. 🎉`);
+    }
   };
 
   return (
