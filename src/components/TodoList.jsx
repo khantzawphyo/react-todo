@@ -3,6 +3,7 @@ import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
 import TodoContext from "../context/TodoContext";
 import Heading from "./Heading";
+import TodoFilters from "./TodoFilters";
 
 const TodoList = () => {
   const { todos } = useContext(TodoContext);
@@ -11,6 +12,7 @@ const TodoList = () => {
     <div className="space-y-6">
       <Heading />
       <TodoInput />
+      <TodoFilters />
       <section>
         <div className="space-y-2">
           {todos.length === 0 ? (
