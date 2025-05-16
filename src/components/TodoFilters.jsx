@@ -6,7 +6,7 @@ const TodoFilters = () => {
   const { filter, setFilter, searchQuery, setSearchQuery } = useContext(TodoContext);
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
         <input
@@ -14,18 +14,18 @@ const TodoFilters = () => {
           placeholder="Search tasks..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-xl border border-stone-200 bg-white pl-9 pr-4 py-2 text-sm shadow-sm transition-all duration-200 placeholder:text-stone-400 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-500/10"
+          className="w-full rounded-md border border-stone-200 pl-9 pr-3 py-2 text-sm"
         />
       </div>
-      <div className="flex gap-2">
+      <div className="flex space-x-2">
         {Object.values(FILTERS).map((filterValue) => (
           <button
             key={filterValue}
             onClick={() => setFilter(filterValue)}
-            className={`btn-secondary ${
+            className={`rounded-md px-3 py-2 text-sm ${
               filter === filterValue
-                ? "!bg-violet-600 !text-white"
-                : ""
+                ? "bg-stone-950 text-white"
+                : "bg-stone-100 text-stone-700 hover:bg-stone-200"
             }`}
           >
             {filterValue.charAt(0).toUpperCase() + filterValue.slice(1)}
