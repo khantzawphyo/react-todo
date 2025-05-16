@@ -10,27 +10,23 @@ const TodoItem = ({ todo }) => {
   const [editedPriority, setEditedPriority] = useState(todo.priority);
   const [editedDueDate, setEditedDueDate] = useState(todo.dueDate);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleEditText = (e) => {
-    setEditedText(e.target.value);
-  };
-
-  const handleEditKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSaveEdit();
-    }
-    if (e.key === "Escape") {
-      handleCancel();
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case PRIORITY_LEVELS.HIGH:
+        return "bg-red-100 text-red-600 ring-red-600/20";
+      case PRIORITY_LEVELS.MEDIUM:
+        return "bg-amber-100 text-amber-600 ring-amber-600/20";
+      case PRIORITY_LEVELS.LOW:
+        return "bg-emerald-100 text-emerald-600 ring-emerald-600/20";
+      default:
+        return "bg-stone-100 text-stone-600 ring-stone-600/20";
     }
   };
 
   const handleSaveEdit = () => {
     const trimmed = editedText.trim();
     if (trimmed === "") {
-      toast.error("Task cannot be empty.");
+      toast.error("Task cannot be empty");
       return;
     }
 
@@ -40,183 +36,130 @@ const TodoItem = ({ todo }) => {
       dueDate: editedDueDate,
     });
     setIsEditing(false);
-    toast.success("Task updated.");
-  };
-
-  const handleCancel = () => {
-    setEditedText(todo.text);
-    setEditedPriority(todo.priority);
-    setEditedDueDate(todo.dueDate);
-    setIsEditing(false);
+    toast.success("Task updated");
   };
 
   const handleDelete = () => {
-    toast.message(`Are you sure you want to delete?`, {
-      description: `Delete "${todo.text}"?`,
+    toast.message(`Delete "${todo.text}"?`, {
       action: {
-        label: "Yes, Delete",
+        label: "Delete",
         onClick: () => {
           deleteTodo(todo.id);
-          toast.success("Task deleted.");
+          toast.success("Task deleted");
         },
       },
     });
   };
 
-  const handleToggleComplete = () => {
-    markComplete(todo.id);
-    if (todo.completed) {
-      toast.info(`📢 "${todo.text}" marked as incomplete.`);
-    } else {
-      toast.success(`🎉 "${todo.text}" marked as complete.`);
-    }
-  };
-
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case PRIORITY_LEVELS.HIGH:
-        return "bg-red-100 text-red-600";
-      case PRIORITY_LEVELS.MEDIUM:
-        return "bg-yellow-100 text-yellow-600";
-      case PRIORITY_LEVELS.LOW:
-        return "bg-green-100 text-green-600";
-      default:
-        return "bg-gray-100 text-gray-600";
-    }
-  };
-
-  const getPriorityBadge = (priority) => {
-    switch (priority) {
-      case PRIORITY_LEVELS.HIGH:
-        return "High";
-      case PRIORITY_LEVELS.MEDIUM:
-        return "Medium";
-      case PRIORITY_LEVELS.LOW:
-        return "Low";
-      default:
-        return "None";
-    }
-  };
-
   return (
-    <div
-      className={`group relative flex items-center justify-between gap-4 rounded-xl p-4 transition-all duration-200 ${
-        todo.completed
-          ? "bg-gray-50 opacity-90"
-          : "bg-white shadow-sm hover:shadow-md"
-      }`}
-    >
-      <button
-        type="button"
-        onClick={handleToggleComplete}
-        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
-          todo.completed
-            ? "border-gray-950 bg-black text-white"
-            : "border-gray-300 hover:border-gray-400"
-        }`}
-      >
-        {todo.completed && <Check size={12} strokeWidth={3} />}
-      </button>
+    <div className={`group animate-slide-up rounded-xl bg-white p-4 transition-all duration-200 ${
+      todo.completed ? "opacity-75" : "shadow-sm hover:shadow-md hover:shadow-violet-500/10"
+    }`}>
+      <div className="flex items-start gap-4">
+        <button
+          onClick={() => markComplete(todo.id)}
+          className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md transition-all duration-200 ${
+            todo.completed
+              ? "bg-violet-600 text-white ring-4 ring-violet-600/20"
+              : "border-2 border-stone-300 hover:border-violet-500 hover:ring-4 hover:ring-violet-500/20"
+          }`}
+        >
+          {todo.completed && <Check size={12} strokeWidth={3} />}
+        </button>
 
-      <div className="flex flex-1 flex-col gap-1 overflow-hidden">
-        {isEditing ? (
-          <>
+        <div className="flex-1 space-y-1">
+          {isEditing ? (
             <input
               type="text"
               value={editedText}
-              className="w-full border-b border-gray-200 py-1 font-medium focus:border-black focus:outline-none"
-              onChange={handleEditText}
-              onKeyDown={handleEditKeyDown}
+              onChange={(e) => setEditedText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSaveEdit();
+                if (e.key === "Escape") setIsEditing(false);
+              }}
+              className="w-full rounded-md border-b border-violet-500 bg-transparent py-1 text-base focus:outline-none"
               autoFocus
             />
-            <div className="mt-2 flex gap-2">
-              <select
-                value={editedPriority}
-                onChange={(e) => setEditedPriority(e.target.value)}
-                className={`rounded-full px-3 py-1 text-xs ${getPriorityColor(editedPriority)}`}
-              >
-                <option value={PRIORITY_LEVELS.LOW}>Low</option>
-                <option value={PRIORITY_LEVELS.MEDIUM}>Medium</option>
-                <option value={PRIORITY_LEVELS.HIGH}>High</option>
-              </select>
-              <input
-                type="date"
-                value={editedDueDate || ""}
-                onChange={(e) => setEditedDueDate(e.target.value)}
-                className="rounded-full border border-gray-200 px-3 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <p
-              className={`truncate font-medium ${
-                todo.completed ? "text-gray-500 line-through" : "text-gray-800"
-              }`}
-            >
+          ) : (
+            <p className={`text-base ${todo.completed ? "text-stone-400 line-through" : "text-stone-700"}`}>
               {todo.text}
             </p>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-              {todo.priority && (
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 ${getPriorityColor(
-                    todo.priority,
-                  )}`}
-                >
-                  <Flag size={12} className="mr-1" />
-                  {getPriorityBadge(todo.priority)}
-                </span>
-              )}
-              {todo.dueDate && (
-                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5">
-                  <Calendar size={12} className="mr-1" />
-                  {new Date(todo.dueDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              )}
-            </div>
-          </>
-        )}
-      </div>
+          )}
 
-      <div className="flex items-center gap-1">
-        {isEditing ? (
-          <>
-            <button
-              className="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-black"
-              onClick={handleSaveEdit}
-              title="Save"
-            >
-              <Save size={16} />
-            </button>
-            <button
-              className="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-red-600"
-              onClick={handleCancel}
-              title="Cancel"
-            >
-              <X size={16} />
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              className="rounded-md p-2 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-black group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
-              onClick={handleEdit}
-              title="Edit"
-            >
-              <Edit2 size={16} />
-            </button>
-            <button
-              className="rounded-md p-2 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-red-600 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
-              onClick={handleDelete}
-              title="Delete"
-            >
-              <Trash2 size={16} />
-            </button>
-          </>
-        )}
+          <div className="flex flex-wrap items-center gap-2">
+            {isEditing ? (
+              <>
+                <select
+                  value={editedPriority}
+                  onChange={(e) => setEditedPriority(e.target.value)}
+                  className={`rounded-full px-3 py-1 text-xs ring-1 ${getPriorityColor(editedPriority)}`}
+                >
+                  <option value={PRIORITY_LEVELS.LOW}>Low</option>
+                  <option value={PRIORITY_LEVELS.MEDIUM}>Medium</option>
+                  <option value={PRIORITY_LEVELS.HIGH}>High</option>
+                </select>
+                <input
+                  type="date"
+                  value={editedDueDate || ""}
+                  onChange={(e) => setEditedDueDate(e.target.value)}
+                  className="rounded-full bg-stone-100 px-3 py-1 text-xs text-stone-600 ring-1 ring-stone-600/20"
+                />
+              </>
+            ) : (
+              <>
+                {todo.priority && (
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs ring-1 ${getPriorityColor(todo.priority)}`}>
+                    <Flag size={12} className="mr-1" />
+                    {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
+                  </span>
+                )}
+                {todo.dueDate && (
+                  <span className="inline-flex items-center rounded-full bg-stone-100 px-2.5 py-0.5 text-xs text-stone-600 ring-1 ring-stone-600/20">
+                    <Calendar size={12} className="mr-1" />
+                    {new Date(todo.dueDate).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-1">
+          {isEditing ? (
+            <>
+              <button
+                onClick={handleSaveEdit}
+                className="rounded-lg p-2 text-stone-500 transition-colors hover:bg-violet-50 hover:text-violet-600"
+              >
+                <Save size={16} />
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="rounded-lg p-2 text-stone-500 transition-colors hover:bg-red-50 hover:text-red-600"
+              >
+                <X size={16} />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="rounded-lg p-2 text-stone-400 opacity-0 transition-all hover:bg-violet-50 hover:text-violet-600 group-hover:opacity-100"
+              >
+                <Edit2 size={16} />
+              </button>
+              <button
+                onClick={handleDelete}
+                className="rounded-lg p-2 text-stone-400 opacity-0 transition-all hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+              >
+                <Trash2 size={16} />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
