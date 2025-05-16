@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import TodoContext, { PRIORITY_LEVELS } from "../context/TodoContext";
 import { toast } from "sonner";
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
 import TodoContext from "../context/TodoContext";
@@ -20,7 +20,7 @@ const TodoList = () => {
               <img
                 src="/empty.svg"
                 alt="No tasks yet"
-                className="mx-auto w-42"
+                className="mx-auto w-36"
                 draggable="false"
               />
             </div>

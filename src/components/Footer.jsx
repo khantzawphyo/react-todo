@@ -1,4 +1,3 @@
-import React from "react";
 import { Github, Heart } from "lucide-react";
 
 const Footer = () => {
